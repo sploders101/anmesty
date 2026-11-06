@@ -1,0 +1,41 @@
+---
+version: v1
+kind: SystemModule
+name: flatpak
+description: Adds the flatpak containerized desktop application platform
+packages:
+  - flatpak
+flatpak_remotes:
+  - name: flathub
+    url: https://flathub.org/repo/flathub.flatpakrepo
+polkit:
+  - id: org.freedesktop.Flatpak.app-install
+    result: yes
+  - id: org.freedesktop.Flatpak.app-uninstall
+    result: yes
+  - id: org.freedesktop.Flatpak.app-update
+    result: yes
+  - id: org.freedesktop.Flatpak.appstream-update
+    result: yes
+  - id: org.freedesktop.Flatpak.configure
+    result: yes
+  - id: org.freedesktop.Flatpak.configure-remote
+    result: yes
+  - id: org.freedesktop.Flatpak.install-bundle
+    result: yes
+  - id: org.freedesktop.Flatpak.metadata-update
+    result: yes
+  - id: org.freedesktop.Flatpak.modify-repo
+    result: yes
+  - id: org.freedesktop.Flatpak.override-parental-controls
+    result: yes
+  - id: org.freedesktop.Flatpak.override-parental-controls-update
+    result: yes
+  - id: org.freedesktop.Flatpak.runtime-install
+    result: yes
+  - id: org.freedesktop.Flatpak.runtime-uninstall
+    result: yes
+  - id: org.freedesktop.Flatpak.runtime-update
+    result: yes
+  - id: org.freedesktop.Flatpak.update-remote
+    result: yes

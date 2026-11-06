@@ -1,0 +1,79 @@
+---
+version: v1
+kind: SystemModule
+name: base
+description: Base system with basic essentials
+packages:
+  - base
+  - linux
+  - linux-firmware
+  - nfs-utils
+  - rsync
+  - vim
+  - man-db
+  - man-pages
+  - texinfo
+  - tmux
+  - nano
+  - wget
+  - git
+  - htop
+  - jq
+  - base-devel
+  - polkit
+  - nmap
+  - netcat
+  - iputils
+  - inetutils
+services:
+  system:
+    - systemd-timesyncd.service
+# polkit result is required, one of:
+#   yes | no | auth_self | auth_admin | auth_self_keep | auth_admin_keep | challenge
+polkit:
+  - id: org.freedesktop.login1.chvt
+    result: yes
+  - id: org.freedesktop.login1.halt
+    result: yes
+  - id: org.freedesktop.login1.halt-ignore-inhibit
+    result: yes
+  - id: org.freedesktop.login1.hibernate
+    result: yes
+  - id: org.freedesktop.login1.hibernate-ignore-inhibit
+    result: yes
+  - id: org.freedesktop.login1.inhibit-block-idle
+    result: yes
+  - id: org.freedesktop.login1.inhibit-block-shutdown
+    result: yes
+  - id: org.freedesktop.login1.inhibit-block-sleep
+    result: yes
+  - id: org.freedesktop.login1.inhibit-delay-shutdown
+    result: yes
+  - id: org.freedesktop.login1.inhibit-delay-sleep
+    result: yes
+  - id: org.freedesktop.login1.inhibit-handle-hibernate-key
+    result: yes
+  - id: org.freedesktop.login1.inhibit-handle-lid-switch
+    result: yes
+  - id: org.freedesktop.login1.inhibit-handle-power-key
+    result: yes
+  - id: org.freedesktop.login1.inhibit-handle-reboot-key
+    result: yes
+  - id: org.freedesktop.login1.inhibit-handle-suspend-key
+    result: yes
+  - id: org.freedesktop.login1.power-off
+    result: yes
+  - id: org.freedesktop.login1.power-off-ignore-inhibit
+    result: yes
+  - id: org.freedesktop.login1.reboot
+    result: yes
+  - id: org.freedesktop.login1.reboot-ignore-inhibit
+    result: yes
+  - id: org.freedesktop.login1.set-reboot-to-firmware-setup
+    result: yes
+  - id: org.freedesktop.login1.set-self-linger
+    result: yes
+  - id: org.freedesktop.login1.suspend
+    result: yes
+  - id: org.freedesktop.login1.suspend-ignore-inhibit
+    result: yes

@@ -1,0 +1,32 @@
+---
+version: v1
+kind: SystemModule
+name: yad-ssh-askpass
+description: Script for using yad as an ssh-askpass program on Wayland
+packages:
+  - yad
+install_files:
+  - path: /usr/local/bin/yad-ssh-askpass
+    mode: 0o755
+    contents: |
+      #!/bin/bash
+
+      MESSAGE="$1"
+
+      if [[ "$MESSAGE" =~ ^'Allow use of key' ]]; then
+        /usr/bin/yad \
+          --title 'ssh-askpass' \
+          --on-top \
+          --center \
+          --fixed \
+          --text="$MESSAGE"
+      else
+        /usr/bin/yad \
+          --title 'ssh-askpass' \
+          --on-top \
+          --center \
+          --fixed \
+          --entry \
+          --hide-text \
+          --entry-label="$MESSAGE"
+      fi

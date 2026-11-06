@@ -1,0 +1,15 @@
+---
+version: v1
+kind: SystemModule
+name: pcsc
+description: Allows access to smartcards
+packages:
+  - pcsclite
+services:
+  system:
+    - pcscd.service
+polkit:
+  - id: org.debian.pcsc-lite.access_card
+    result: yes
+  - id: org.debian.pcsc-lite.access_pcsc
+    result: yes

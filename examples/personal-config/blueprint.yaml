@@ -1,0 +1,21 @@
+---
+version: v1
+kind: SystemConfig
+name: shaunkeys-pc
+sources:
+  - modules/*.yaml
+modules:
+  - base
+  - network-manager
+  - pcsc
+  - amd-ucode
+  - bluetooth
+  - devtools
+  - pipewire
+  - gui-hyprdank
+  - gui-extras
+  - yad-ssh-askpass
+  - extras
+user: shaunkeys
+locale: en_US.UTF-8
+timezone: UTC

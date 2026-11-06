@@ -1,0 +1,17 @@
+---
+version: v1
+kind: SystemModule
+name: devtools
+description: My personal set of developer tools
+packages:
+  - rustup
+  - binaryen
+  - cmake
+  - meson
+  - cpio
+  - pkg-config
+  - gcc
+  - zellij
+  - ripgrep
+  - gitui
+  - go

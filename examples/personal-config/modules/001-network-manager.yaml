@@ -1,0 +1,46 @@
+---
+version: v1
+kind: SystemModule
+name: network-manager
+description: Adds network manager for easy roaming & automatic network configuration
+packages:
+  - networkmanager
+services:
+  system:
+    - NetworkManager.service
+polkit:
+  - id: org.freedesktop.NetworkManager.checkpoint-rollback
+    result: yes
+  - id: org.freedesktop.NetworkManager.enable-disable-connectivity-check
+    result: yes
+  - id: org.freedesktop.NetworkManager.enable-disable-network
+    result: yes
+  - id: org.freedesktop.NetworkManager.enable-disable-statistics
+    result: yes
+  - id: org.freedesktop.NetworkManager.enable-disable-wifi
+    result: yes
+  - id: org.freedesktop.NetworkManager.enable-disable-wimax
+    result: yes
+  - id: org.freedesktop.NetworkManager.enable-disable-wwan
+    result: yes
+  - id: org.freedesktop.NetworkManager.network-control
+    result: yes
+  - id: org.freedesktop.NetworkManager.reload
+    result: yes
+  - id: org.freedesktop.NetworkManager.settings.modify.global-dns
+    result: yes
+  - id: org.freedesktop.NetworkManager.settings.modify.hostname
+    result: yes
+  - id: org.freedesktop.NetworkManager.settings.modify.own
+    result: yes
+  - id: org.freedesktop.NetworkManager.settings.modify.system
+    result: yes
+  - id: org.freedesktop.NetworkManager.sleep-wake
+    result: yes
+  - id: org.freedesktop.NetworkManager.wifi.scan
+    result: yes
+  - id: org.freedesktop.NetworkManager.wifi.share.open
+    result: yes
+  - id: org.freedesktop.NetworkManager.wifi.share.protected
+    result: yes
+

@@ -1,0 +1,24 @@
+---
+version: v1
+kind: SystemModule
+name: amd-ucode
+description: Microcode for AMD processors
+packages:
+  - amd-ucode
+install_files:
+  - path: /etc/pacman.d/hooks/ucode.hook
+    contents: |
+      [Trigger]
+      Operation=Install
+      Operation=Upgrade
+      Operation=Remove
+      Type=Package
+      Target=amd-ucode
+      Target=linux
+
+      [Action]
+      Description=Update Microcode module in initcpio
+      Depends=mkinitcpio
+      When=PostTransaction
+      NeedsTargets
+      Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'

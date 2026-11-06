@@ -1,0 +1,11 @@
+---
+version: v1
+kind: SystemModule
+name: bluetooth
+description: Bluetooth support through Bluez & bluez-utils
+packages:
+  - bluez
+  - bluez-utils
+services:
+  system:
+    - bluetooth.service

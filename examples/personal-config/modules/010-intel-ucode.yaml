@@ -1,0 +1,24 @@
+---
+version: v1
+kind: SystemModule
+name: intel-ucode
+description: Microcode for Intel processors
+packages:
+  - intel-ucode
+install_files:
+  - path: /etc/pacman.d/hooks/ucode.hook
+    contents: |
+      [Trigger]
+      Operation=Install
+      Operation=Upgrade
+      Operation=Remove
+      Type=Package
+      Target=intel-ucode
+      Target=linux
+
+      [Action]
+      Description=Update Microcode module in initcpio
+      Depends=mkinitcpio
+      When=PostTransaction
+      NeedsTargets
+      Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'

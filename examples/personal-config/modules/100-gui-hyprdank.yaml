@@ -1,0 +1,37 @@
+---
+version: v1
+kind: SystemModule
+name: gui-hyprdank
+description: A combination of hyprland & DMS (Dank Material Shell)
+depends:
+  - pipewire
+packages:
+  - brightnessctl
+  - ddcutil
+  - uwsm
+  - hyprland
+  - ghostty
+  - xdg-desktop-portal-hyprland
+  - xdg-desktop-portal-gtk
+  - hyprland-qt-support
+  - kimageformats
+  - greetd
+  - qt6ct
+  - qt6websockets
+  - adw-gtk-theme
+  - mutagen
+aur_packages:
+  - quickshell-git
+  - dms-shell-hyprland
+  - greetd-dms-greeter-git
+services:
+  system:
+    - greetd.service
+user_groups:
+  - greeter
+
+postinstall:
+  - runas: !template '{{.Username}}'
+    cmd: dms greeter enable
+  - runas: !template '{{.Username}}'
+    cmd: dms greeter sync

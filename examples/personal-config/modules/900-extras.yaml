@@ -1,0 +1,25 @@
+---
+version: v1
+kind: SystemModule
+name: extras
+description: My personal extras
+depends:
+  - flatpak
+packages:
+  - syncthing
+  - jdk-openjdk
+  - imagemagick
+  - cava
+flatpak_packages:
+  - com.bitwarden.desktop
+  - com.discordapp.Discord
+  - com.obsproject.Studio
+  - com.spotify.Client
+  - io.github.screwys.Rufin
+  - io.gitlab.adhami3310.Impression
+  - net.ankiweb.Anki
+  - org.localsend.localsend_app
+  - org.prismlauncher.PrismLauncher
+services:
+  user:
+    - syncthing.service

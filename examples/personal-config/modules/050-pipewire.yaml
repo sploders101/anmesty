@@ -1,0 +1,17 @@
+---
+version: v1
+kind: SystemModule
+name: pipewire
+description: Pipewire Audio System
+packages:
+  - pipewire
+  - pipewire-pulse
+  - pipewire-alsa
+  - pipewire-jack
+  - pipewire-audio
+  - wireplumber
+services:
+  user:
+    - pipewire.service
+    - wireplumber.service
+    - pipewire-pulse.service

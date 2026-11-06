@@ -1,0 +1,28 @@
+---
+version: v1
+kind: SystemModule
+name: gui-extras
+description: Everyday GUI essentials that make the environment feel more complete
+depends:
+  - flatpak
+packages:
+  - nautilus
+  - loupe
+  - gnome-calculator
+  - hyprpicker
+  - wl-clipboard
+  - grim
+  - slurp
+  - ttf-font-awesome
+  - cups-pk-helper
+  - helvum
+  - pavucontrol
+  - power-profiles-daemon
+flatpak_packages:
+  - com.brave.Browser
+  - com.github.tchx84.Flatseal
+  - com.saivert.pwvucontrol
+  - io.github.kolunmi.Bazaar
+polkit:
+  - id: org.freedesktop.UPower.PowerProfiles.switch-profile
+    result: yes

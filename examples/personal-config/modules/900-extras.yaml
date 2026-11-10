@@ -3,8 +3,6 @@ version: v1
 kind: SystemModule
 name: extras
 description: My personal extras
-depends:
-  - flatpak
 packages:
   - syncthing
   - jdk-openjdk

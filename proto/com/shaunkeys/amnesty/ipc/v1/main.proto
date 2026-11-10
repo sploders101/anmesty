@@ -1,0 +1,74 @@
+syntax = "proto3";
+package com.shaunkeys.amnesty.ipc.v1;
+
+service BuilderService {
+  rpc Initialize(InitializeRequest) returns (InitializeResponse);
+  rpc RunCommand(RunCommandRequest) returns (RunCommandResponse);
+  rpc WriteFile(WriteFileRequest) returns (WriteFileResponse);
+}
+
+message InstallAurRequest {
+  repeated string packages = 1;
+}
+message InstallAurResponse {}
+
+message Blueprint {
+  string name = 1;
+  string hostname= 2;
+  string username = 3;
+  string locale = 4;
+  string timezone = 5;
+  repeated string packages = 6;
+  repeated string aur_packages = 7;
+  repeated string flatpak_packages = 8;
+  repeated FlatpakRemote flatpak_remotes = 9;
+  repeated string system_services = 10;
+  repeated string user_services = 11;
+  repeated PolkitEntry polkit = 12;
+  repeated InstallFile install_files = 13;
+  repeated string admin_groups = 14;
+  repeated string user_groups = 15;
+  repeated Postinstall postinstall = 16;
+}
+
+message FlatpakRemote {
+  string name = 1;
+  string url = 2;
+}
+
+message PolkitEntry {
+  string id = 1;
+  string result = 2;
+}
+
+message InstallFile {
+  string path = 1;
+  uint32 mode = 2;
+  string contents = 3;
+}
+
+message Postinstall {
+  string runas = 1;
+  string cmd = 2;
+}
+
+message InitializeRequest {
+  string rootdir = 1;
+}
+message InitializeResponse {}
+
+message RunCommandRequest {
+  string command = 1;
+  repeated string args = 2;
+  repeated string env = 3;
+}
+message RunCommandResponse {
+  int32 exit_code = 1;
+  string output = 2;
+}
+
+message WriteFileRequest {
+  string file_path = 1;
+  string contents = 2;
+}
+message WriteFileResponse {}

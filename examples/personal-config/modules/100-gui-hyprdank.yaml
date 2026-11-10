@@ -3,8 +3,6 @@ version: v1
 kind: SystemModule
 name: gui-hyprdank
 description: A combination of hyprland & DMS (Dank Material Shell)
-depends:
-  - pipewire
 packages:
   - brightnessctl
   - ddcutil

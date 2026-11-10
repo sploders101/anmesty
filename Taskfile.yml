@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+
+version: '3'
+
+tasks:
+  dist-dir:
+    run: once
+    internal: true
+    silent: true
+    cmds:
+      - mkdir -p dist
+
+  gen-proto:
+    run: once
+    desc: Generates code for protobufs
+    cmds:
+      - buf generate
+    sources:
+      - proto/**/*.proto
+    generates:
+      - internal/gen/proto/**/*
+
+  gen:
+    desc: Generates any code that needs to be regenerated
+    deps:
+      - gen-proto
+
+  build:
+    run: once
+    desc: Builds the amnesty CLI
+    deps:
+      - dist-dir
+      - gen
+    cmds:
+      - go build -o dist/amnesty ./cmd/amnesty
+    sources:
+      - '**/*.go'
+      - go.mod
+      - go.sum
+    generates:
+      - dist/amnesty

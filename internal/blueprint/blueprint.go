@@ -1,8 +1,13 @@
 package blueprint
 
 import (
+	"context"
 	"fmt"
+	"io/fs"
 	"maps"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/sploders101/amnesty/internal/config"
 	ipcv1 "github.com/sploders101/amnesty/internal/gen/proto/com/shaunkeys/amnesty/ipc/v1"
@@ -11,7 +16,6 @@ import (
 
 type Blueprint struct {
 	Name            string
-	Hostname        string
 	Username        string
 	Locale          string
 	Timezone        string
@@ -39,8 +43,7 @@ func NewBlueprint() *Blueprint {
 
 func (bp Blueprint) IntoProto() *ipcv1.Blueprint {
 	return ipcv1.Blueprint_builder{
-		Name:            bp.Name,
-		Hostname:        bp.Hostname,
+		Hostname:        bp.Name,
 		Username:        bp.Username,
 		Locale:          bp.Locale,
 		Timezone:        bp.Timezone,
@@ -176,6 +179,39 @@ func (bp *Blueprint) AddModule(templateVars map[string]any, module config.System
 	return nil
 }
 
+func LoadSystemTemplate(ctx context.Context, modulesPath string) (*config.SystemTemplate, error) {
+	systemplate := config.NewSystemTemplate()
+
+	modules, err := os.Stat(modulesPath)
+	if err != nil {
+		return nil, fmt.Errorf("failed to stat modules directory: %w", err)
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	if !modules.IsDir() {
+		if err := systemplate.LoadFile(modulesPath); err != nil {
+			return nil, err
+		}
+	} else {
+		if err := filepath.WalkDir(
+			modulesPath,
+			func(path string, entry fs.DirEntry, err error) error {
+				if err := ctx.Err(); err != nil {
+					return err
+				}
+				if !entry.Type().IsRegular() || !strings.HasSuffix(entry.Name(), ".yaml") {
+					return nil
+				}
+				return systemplate.LoadFile(path)
+			},
+		); err != nil {
+			return nil, err
+		}
+	}
+	return systemplate, nil
+}
+
 func AssembleBlueprint(systemplate *config.SystemTemplate, sysconfig string) (*Blueprint, error) {
 	config, ok := systemplate.Configs[sysconfig]
 	if !ok {
@@ -184,14 +220,13 @@ func AssembleBlueprint(systemplate *config.SystemTemplate, sysconfig string) (*B
 
 	bp := NewBlueprint()
 	bp.Name = config.Name
-	bp.Hostname = config.Hostname
 	bp.Username = config.Username
 	bp.Locale = config.Locale
 	bp.Timezone = config.Timezone
 
 	templateVars := make(map[string]any)
 	templateVars["name"] = bp.Name
-	templateVars["hostname"] = bp.Hostname
+	templateVars["hostname"] = bp.Name
 	templateVars["username"] = bp.Username
 	templateVars["locale"] = bp.Locale
 	templateVars["timezone"] = bp.Timezone

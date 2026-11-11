@@ -2,17 +2,23 @@ package main
 
 import (
 	"context"
-	"errors"
-	"path/filepath"
+	"fmt"
+	"os"
+	"strings"
 
-	"github.com/adrg/xdg"
+	"charm.land/huh/v2"
+	"github.com/sploders101/amnesty/internal/blueprint"
 	"github.com/sploders101/amnesty/internal/install"
 	"github.com/urfave/cli/v3"
 )
 
 func installCli() *cli.Command {
-	sysconfig := "shaunkeys-pc"
-	modulesPath := filepath.Join(xdg.ConfigHome, "amnesty", "modules")
+	var sysconfig string
+	hostname, err := os.ReadFile("/etc/hostname")
+	if err == nil {
+		sysconfig = strings.TrimSpace(string(hostname))
+	}
+	modules := "/etc/amnesty/modules"
 
 	return &cli.Command{
 		Name:  "install",
@@ -26,7 +32,7 @@ func installCli() *cli.Command {
 			&cli.StringFlag{
 				Name:  "modules",
 				Usage: "Path to the modules file or directory",
-				Value: modulesPath,
+				Value: modules,
 			},
 		},
 		Arguments: []cli.Argument{
@@ -41,11 +47,35 @@ func installCli() *cli.Command {
 			modules := cmd.String("modules")
 			rootfs := cmd.StringArg("rootfs")
 
-			if err := install.InstallBlueprint(ctx, sysconfig, modules, rootfs); err != nil {
+			systemplate, err := blueprint.LoadSystemTemplate(ctx, modules)
+			if err != nil {
 				return err
 			}
 
-			return errors.New("success???")
+			blueprint, err := blueprint.AssembleBlueprint(systemplate, sysconfig)
+			if err != nil {
+				return err
+			}
+
+			var password string
+			if err := huh.NewInput().
+				EchoMode(huh.EchoModePassword).
+				Title(fmt.Sprintf("Password for user %q", blueprint.Username)).
+				Value(&password).
+				Run(); err != nil {
+				return fmt.Errorf("failed to get password: %w", err)
+			}
+
+			if err := install.InstallBlueprint(
+				ctx,
+				blueprint,
+				rootfs,
+				password,
+			); err != nil {
+				return err
+			}
+
+			return nil
 		},
 	}
 }

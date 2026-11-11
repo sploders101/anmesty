@@ -122,22 +122,21 @@ func (b0 InstallAurResponse_builder) Build() *InstallAurResponse {
 
 type Blueprint struct {
 	state                      protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Name            string                 `protobuf:"bytes,1,opt,name=name,proto3"`
-	xxx_hidden_Hostname        string                 `protobuf:"bytes,2,opt,name=hostname,proto3"`
-	xxx_hidden_Username        string                 `protobuf:"bytes,3,opt,name=username,proto3"`
-	xxx_hidden_Locale          string                 `protobuf:"bytes,4,opt,name=locale,proto3"`
-	xxx_hidden_Timezone        string                 `protobuf:"bytes,5,opt,name=timezone,proto3"`
-	xxx_hidden_Packages        []string               `protobuf:"bytes,6,rep,name=packages,proto3"`
-	xxx_hidden_AurPackages     []string               `protobuf:"bytes,7,rep,name=aur_packages,json=aurPackages,proto3"`
-	xxx_hidden_FlatpakPackages []string               `protobuf:"bytes,8,rep,name=flatpak_packages,json=flatpakPackages,proto3"`
-	xxx_hidden_FlatpakRemotes  *[]*FlatpakRemote      `protobuf:"bytes,9,rep,name=flatpak_remotes,json=flatpakRemotes,proto3"`
-	xxx_hidden_SystemServices  []string               `protobuf:"bytes,10,rep,name=system_services,json=systemServices,proto3"`
-	xxx_hidden_UserServices    []string               `protobuf:"bytes,11,rep,name=user_services,json=userServices,proto3"`
-	xxx_hidden_Polkit          *[]*PolkitEntry        `protobuf:"bytes,12,rep,name=polkit,proto3"`
-	xxx_hidden_InstallFiles    *[]*InstallFile        `protobuf:"bytes,13,rep,name=install_files,json=installFiles,proto3"`
-	xxx_hidden_AdminGroups     []string               `protobuf:"bytes,14,rep,name=admin_groups,json=adminGroups,proto3"`
-	xxx_hidden_UserGroups      []string               `protobuf:"bytes,15,rep,name=user_groups,json=userGroups,proto3"`
-	xxx_hidden_Postinstall     *[]*Postinstall        `protobuf:"bytes,16,rep,name=postinstall,proto3"`
+	xxx_hidden_Hostname        string                 `protobuf:"bytes,1,opt,name=hostname,proto3"`
+	xxx_hidden_Username        string                 `protobuf:"bytes,2,opt,name=username,proto3"`
+	xxx_hidden_Locale          string                 `protobuf:"bytes,3,opt,name=locale,proto3"`
+	xxx_hidden_Timezone        string                 `protobuf:"bytes,4,opt,name=timezone,proto3"`
+	xxx_hidden_Packages        []string               `protobuf:"bytes,5,rep,name=packages,proto3"`
+	xxx_hidden_AurPackages     []string               `protobuf:"bytes,6,rep,name=aur_packages,json=aurPackages,proto3"`
+	xxx_hidden_FlatpakPackages []string               `protobuf:"bytes,7,rep,name=flatpak_packages,json=flatpakPackages,proto3"`
+	xxx_hidden_FlatpakRemotes  *[]*FlatpakRemote      `protobuf:"bytes,8,rep,name=flatpak_remotes,json=flatpakRemotes,proto3"`
+	xxx_hidden_SystemServices  []string               `protobuf:"bytes,9,rep,name=system_services,json=systemServices,proto3"`
+	xxx_hidden_UserServices    []string               `protobuf:"bytes,10,rep,name=user_services,json=userServices,proto3"`
+	xxx_hidden_Polkit          *[]*PolkitEntry        `protobuf:"bytes,11,rep,name=polkit,proto3"`
+	xxx_hidden_InstallFiles    *[]*InstallFile        `protobuf:"bytes,12,rep,name=install_files,json=installFiles,proto3"`
+	xxx_hidden_AdminGroups     []string               `protobuf:"bytes,13,rep,name=admin_groups,json=adminGroups,proto3"`
+	xxx_hidden_UserGroups      []string               `protobuf:"bytes,14,rep,name=user_groups,json=userGroups,proto3"`
+	xxx_hidden_Postinstall     *[]*Postinstall        `protobuf:"bytes,15,rep,name=postinstall,proto3"`
 	unknownFields              protoimpl.UnknownFields
 	sizeCache                  protoimpl.SizeCache
 }
@@ -165,13 +164,6 @@ func (x *Blueprint) ProtoReflect() protoreflect.Message {
 		return ms
 	}
 	return mi.MessageOf(x)
-}
-
-func (x *Blueprint) GetName() string {
-	if x != nil {
-		return x.xxx_hidden_Name
-	}
-	return ""
 }
 
 func (x *Blueprint) GetHostname() string {
@@ -287,10 +279,6 @@ func (x *Blueprint) GetPostinstall() []*Postinstall {
 	return nil
 }
 
-func (x *Blueprint) SetName(v string) {
-	x.xxx_hidden_Name = v
-}
-
 func (x *Blueprint) SetHostname(v string) {
 	x.xxx_hidden_Hostname = v
 }
@@ -354,7 +342,6 @@ func (x *Blueprint) SetPostinstall(v []*Postinstall) {
 type Blueprint_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Name            string
 	Hostname        string
 	Username        string
 	Locale          string
@@ -376,7 +363,6 @@ func (b0 Blueprint_builder) Build() *Blueprint {
 	m0 := &Blueprint{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Name = b.Name
 	x.xxx_hidden_Hostname = b.Hostname
 	x.xxx_hidden_Username = b.Username
 	x.xxx_hidden_Locale = b.Locale
@@ -956,26 +942,25 @@ const file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_rawDesc = "" +
 	"-proto/com/shaunkeys/amnesty/ipc/v1/main.proto\x12\x1ccom.shaunkeys.amnesty.ipc.v1\"/\n" +
 	"\x11InstallAurRequest\x12\x1a\n" +
 	"\bpackages\x18\x01 \x03(\tR\bpackages\"\x14\n" +
-	"\x12InstallAurResponse\"\xbd\x05\n" +
-	"\tBlueprint\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x1a\n" +
-	"\bhostname\x18\x02 \x01(\tR\bhostname\x12\x1a\n" +
-	"\busername\x18\x03 \x01(\tR\busername\x12\x16\n" +
-	"\x06locale\x18\x04 \x01(\tR\x06locale\x12\x1a\n" +
-	"\btimezone\x18\x05 \x01(\tR\btimezone\x12\x1a\n" +
-	"\bpackages\x18\x06 \x03(\tR\bpackages\x12!\n" +
-	"\faur_packages\x18\a \x03(\tR\vaurPackages\x12)\n" +
-	"\x10flatpak_packages\x18\b \x03(\tR\x0fflatpakPackages\x12T\n" +
-	"\x0fflatpak_remotes\x18\t \x03(\v2+.com.shaunkeys.amnesty.ipc.v1.FlatpakRemoteR\x0eflatpakRemotes\x12'\n" +
-	"\x0fsystem_services\x18\n" +
-	" \x03(\tR\x0esystemServices\x12#\n" +
-	"\ruser_services\x18\v \x03(\tR\fuserServices\x12A\n" +
-	"\x06polkit\x18\f \x03(\v2).com.shaunkeys.amnesty.ipc.v1.PolkitEntryR\x06polkit\x12N\n" +
-	"\rinstall_files\x18\r \x03(\v2).com.shaunkeys.amnesty.ipc.v1.InstallFileR\finstallFiles\x12!\n" +
-	"\fadmin_groups\x18\x0e \x03(\tR\vadminGroups\x12\x1f\n" +
-	"\vuser_groups\x18\x0f \x03(\tR\n" +
+	"\x12InstallAurResponse\"\xa9\x05\n" +
+	"\tBlueprint\x12\x1a\n" +
+	"\bhostname\x18\x01 \x01(\tR\bhostname\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x16\n" +
+	"\x06locale\x18\x03 \x01(\tR\x06locale\x12\x1a\n" +
+	"\btimezone\x18\x04 \x01(\tR\btimezone\x12\x1a\n" +
+	"\bpackages\x18\x05 \x03(\tR\bpackages\x12!\n" +
+	"\faur_packages\x18\x06 \x03(\tR\vaurPackages\x12)\n" +
+	"\x10flatpak_packages\x18\a \x03(\tR\x0fflatpakPackages\x12T\n" +
+	"\x0fflatpak_remotes\x18\b \x03(\v2+.com.shaunkeys.amnesty.ipc.v1.FlatpakRemoteR\x0eflatpakRemotes\x12'\n" +
+	"\x0fsystem_services\x18\t \x03(\tR\x0esystemServices\x12#\n" +
+	"\ruser_services\x18\n" +
+	" \x03(\tR\fuserServices\x12A\n" +
+	"\x06polkit\x18\v \x03(\v2).com.shaunkeys.amnesty.ipc.v1.PolkitEntryR\x06polkit\x12N\n" +
+	"\rinstall_files\x18\f \x03(\v2).com.shaunkeys.amnesty.ipc.v1.InstallFileR\finstallFiles\x12!\n" +
+	"\fadmin_groups\x18\r \x03(\tR\vadminGroups\x12\x1f\n" +
+	"\vuser_groups\x18\x0e \x03(\tR\n" +
 	"userGroups\x12K\n" +
-	"\vpostinstall\x18\x10 \x03(\v2).com.shaunkeys.amnesty.ipc.v1.PostinstallR\vpostinstall\"5\n" +
+	"\vpostinstall\x18\x0f \x03(\v2).com.shaunkeys.amnesty.ipc.v1.PostinstallR\vpostinstall\"5\n" +
 	"\rFlatpakRemote\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
 	"\x03url\x18\x02 \x01(\tR\x03url\"5\n" +

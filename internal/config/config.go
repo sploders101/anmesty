@@ -5,7 +5,6 @@ type SystemConfig struct {
 	Kind     string   `yaml:"kind"`
 	Name     string   `yaml:"name"`
 	Modules  []string `yaml:"modules"`
-	Hostname string   `yaml:"hostname"`
 	Username string   `yaml:"username"`
 	Locale   string   `yaml:"locale"`
 	Timezone string   `yaml:"timezone"`

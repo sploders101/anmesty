@@ -4,7 +4,6 @@ package com.shaunkeys.amnesty.ipc.v1;
 service BuilderService {
   rpc Initialize(InitializeRequest) returns (InitializeResponse);
   rpc RunCommand(RunCommandRequest) returns (RunCommandResponse);
-  rpc WriteFile(WriteFileRequest) returns (WriteFileResponse);
 }
 
 message InstallAurRequest {
@@ -13,22 +12,21 @@ message InstallAurRequest {
 message InstallAurResponse {}
 
 message Blueprint {
-  string name = 1;
-  string hostname= 2;
-  string username = 3;
-  string locale = 4;
-  string timezone = 5;
-  repeated string packages = 6;
-  repeated string aur_packages = 7;
-  repeated string flatpak_packages = 8;
-  repeated FlatpakRemote flatpak_remotes = 9;
-  repeated string system_services = 10;
-  repeated string user_services = 11;
-  repeated PolkitEntry polkit = 12;
-  repeated InstallFile install_files = 13;
-  repeated string admin_groups = 14;
-  repeated string user_groups = 15;
-  repeated Postinstall postinstall = 16;
+  string hostname = 1;
+  string username = 2;
+  string locale = 3;
+  string timezone = 4;
+  repeated string packages = 5;
+  repeated string aur_packages = 6;
+  repeated string flatpak_packages = 7;
+  repeated FlatpakRemote flatpak_remotes = 8;
+  repeated string system_services = 9;
+  repeated string user_services = 10;
+  repeated PolkitEntry polkit = 11;
+  repeated InstallFile install_files = 12;
+  repeated string admin_groups = 13;
+  repeated string user_groups = 14;
+  repeated Postinstall postinstall = 15;
 }
 
 message FlatpakRemote {
@@ -66,9 +64,3 @@ message RunCommandResponse {
   int32 exit_code = 1;
   string output = 2;
 }
-
-message WriteFileRequest {
-  string file_path = 1;
-  string contents = 2;
-}
-message WriteFileResponse {}

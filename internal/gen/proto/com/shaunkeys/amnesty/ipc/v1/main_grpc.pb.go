@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	BuilderService_Initialize_FullMethodName = "/com.shaunkeys.amnesty.ipc.v1.BuilderService/Initialize"
 	BuilderService_RunCommand_FullMethodName = "/com.shaunkeys.amnesty.ipc.v1.BuilderService/RunCommand"
+	BuilderService_InstallAur_FullMethodName = "/com.shaunkeys.amnesty.ipc.v1.BuilderService/InstallAur"
 )
 
 // BuilderServiceClient is the client API for BuilderService service.
@@ -29,6 +30,7 @@ const (
 type BuilderServiceClient interface {
 	Initialize(ctx context.Context, in *InitializeRequest, opts ...grpc.CallOption) (*InitializeResponse, error)
 	RunCommand(ctx context.Context, in *RunCommandRequest, opts ...grpc.CallOption) (*RunCommandResponse, error)
+	InstallAur(ctx context.Context, in *InstallAurRequest, opts ...grpc.CallOption) (*InstallAurResponse, error)
 }
 
 type builderServiceClient struct {
@@ -59,12 +61,23 @@ func (c *builderServiceClient) RunCommand(ctx context.Context, in *RunCommandReq
 	return out, nil
 }
 
+func (c *builderServiceClient) InstallAur(ctx context.Context, in *InstallAurRequest, opts ...grpc.CallOption) (*InstallAurResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(InstallAurResponse)
+	err := c.cc.Invoke(ctx, BuilderService_InstallAur_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BuilderServiceServer is the server API for BuilderService service.
 // All implementations must embed UnimplementedBuilderServiceServer
 // for forward compatibility.
 type BuilderServiceServer interface {
 	Initialize(context.Context, *InitializeRequest) (*InitializeResponse, error)
 	RunCommand(context.Context, *RunCommandRequest) (*RunCommandResponse, error)
+	InstallAur(context.Context, *InstallAurRequest) (*InstallAurResponse, error)
 	mustEmbedUnimplementedBuilderServiceServer()
 }
 
@@ -80,6 +93,9 @@ func (UnimplementedBuilderServiceServer) Initialize(context.Context, *Initialize
 }
 func (UnimplementedBuilderServiceServer) RunCommand(context.Context, *RunCommandRequest) (*RunCommandResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method RunCommand not implemented")
+}
+func (UnimplementedBuilderServiceServer) InstallAur(context.Context, *InstallAurRequest) (*InstallAurResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method InstallAur not implemented")
 }
 func (UnimplementedBuilderServiceServer) mustEmbedUnimplementedBuilderServiceServer() {}
 func (UnimplementedBuilderServiceServer) testEmbeddedByValue()                        {}
@@ -138,6 +154,24 @@ func _BuilderService_RunCommand_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BuilderService_InstallAur_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(InstallAurRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BuilderServiceServer).InstallAur(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BuilderService_InstallAur_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BuilderServiceServer).InstallAur(ctx, req.(*InstallAurRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BuilderService_ServiceDesc is the grpc.ServiceDesc for BuilderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -152,6 +186,10 @@ var BuilderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RunCommand",
 			Handler:    _BuilderService_RunCommand_Handler,
+		},
+		{
+			MethodName: "InstallAur",
+			Handler:    _BuilderService_InstallAur_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

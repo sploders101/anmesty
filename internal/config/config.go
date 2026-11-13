@@ -1,5 +1,7 @@
 package config
 
+import "os"
+
 type SystemConfig struct {
 	Version  string   `yaml:"version"`
 	Kind     string   `yaml:"kind"`
@@ -44,7 +46,7 @@ type PolkitEntry struct {
 
 type InstallFile struct {
 	Path     TemplatedString `yaml:"path"`
-	Mode     uint32          `yaml:"mode"`
+	Mode     os.FileMode     `yaml:"mode"`
 	Contents TemplatedString `yaml:"contents"`
 }
 

@@ -4,14 +4,11 @@ import (
 	"context"
 	"fmt"
 	"io/fs"
-	"maps"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"github.com/sploders101/amnesty/internal/config"
-	ipcv1 "github.com/sploders101/amnesty/internal/gen/proto/com/shaunkeys/amnesty/ipc/v1"
-	"github.com/sploders101/amnesty/pkg/utils"
 )
 
 type Blueprint struct {
@@ -22,14 +19,35 @@ type Blueprint struct {
 	Packages        map[string]struct{}
 	AURPackages     map[string]struct{}
 	FlatpakPackages map[string]struct{}
-	FlatpakRemotes  map[string]*ipcv1.FlatpakRemote
+	FlatpakRemotes  map[string]FlatpakRemote
 	SystemServices  []string
 	UserServices    []string
-	Polkit          []*ipcv1.PolkitEntry
-	InstallFiles    []*ipcv1.InstallFile
+	Polkit          []PolkitEntry
+	InstallFiles    []InstallFile
 	AdminGroups     []string
 	UserGroups      []string
-	Postinstall     []*ipcv1.Postinstall
+	Postinstall     []Postinstall
+}
+
+type FlatpakRemote struct {
+	Name string
+	Url  string
+}
+
+type PolkitEntry struct {
+	Id     string `json:"id"`
+	Result string `json:"result"`
+}
+
+type InstallFile struct {
+	Path     string
+	Mode     os.FileMode
+	Contents string
+}
+
+type Postinstall struct {
+	Runas string
+	Cmd   string
 }
 
 func NewBlueprint() *Blueprint {
@@ -37,28 +55,8 @@ func NewBlueprint() *Blueprint {
 		Packages:        make(map[string]struct{}),
 		AURPackages:     make(map[string]struct{}),
 		FlatpakPackages: make(map[string]struct{}),
-		FlatpakRemotes:  make(map[string]*ipcv1.FlatpakRemote),
+		FlatpakRemotes:  make(map[string]FlatpakRemote),
 	}
-}
-
-func (bp Blueprint) IntoProto() *ipcv1.Blueprint {
-	return ipcv1.Blueprint_builder{
-		Hostname:        bp.Name,
-		Username:        bp.Username,
-		Locale:          bp.Locale,
-		Timezone:        bp.Timezone,
-		Packages:        utils.LinearizeStringSet(bp.Packages),
-		AurPackages:     utils.LinearizeStringSet(bp.AURPackages),
-		FlatpakPackages: utils.LinearizeStringSet(bp.FlatpakPackages),
-		FlatpakRemotes:  utils.LinearizeIter(maps.Values(bp.FlatpakRemotes)),
-		SystemServices:  bp.SystemServices,
-		UserServices:    bp.UserServices,
-		Polkit:          bp.Polkit,
-		InstallFiles:    bp.InstallFiles,
-		AdminGroups:     bp.AdminGroups,
-		UserGroups:      bp.UserGroups,
-		Postinstall:     bp.Postinstall,
-	}.Build()
 }
 
 func (bp *Blueprint) AddModule(templateVars map[string]any, module config.SystemModule) error {
@@ -91,10 +89,10 @@ func (bp *Blueprint) AddModule(templateVars map[string]any, module config.System
 		if err != nil {
 			return fmt.Errorf("failed to render flatpak url: %w", err)
 		}
-		bp.FlatpakRemotes[remote.Name] = ipcv1.FlatpakRemote_builder{
+		bp.FlatpakRemotes[remote.Name] = FlatpakRemote{
 			Name: remote.Name,
 			Url:  url,
-		}.Build()
+		}
 	}
 
 	// Services
@@ -119,10 +117,10 @@ func (bp *Blueprint) AddModule(templateVars map[string]any, module config.System
 		if err != nil {
 			return fmt.Errorf("failed to render polkit result: %w", err)
 		}
-		bp.Polkit = append(bp.Polkit, ipcv1.PolkitEntry_builder{
+		bp.Polkit = append(bp.Polkit, PolkitEntry{
 			Id:     entry.Id,
 			Result: result,
-		}.Build())
+		})
 	}
 
 	// InstallFiles
@@ -135,11 +133,11 @@ func (bp *Blueprint) AddModule(templateVars map[string]any, module config.System
 		if err != nil {
 			return fmt.Errorf("failed to render install_files contents: %w", err)
 		}
-		bp.InstallFiles = append(bp.InstallFiles, ipcv1.InstallFile_builder{
+		bp.InstallFiles = append(bp.InstallFiles, InstallFile{
 			Path:     path,
 			Mode:     entry.Mode,
 			Contents: contents,
-		}.Build())
+		})
 	}
 
 	// AdminGroups
@@ -170,10 +168,10 @@ func (bp *Blueprint) AddModule(templateVars map[string]any, module config.System
 		if err != nil {
 			return fmt.Errorf("failed to render postinstall cmd: %w", err)
 		}
-		bp.Postinstall = append(bp.Postinstall, ipcv1.Postinstall_builder{
+		bp.Postinstall = append(bp.Postinstall, Postinstall{
 			Runas: runas,
 			Cmd:   cmd,
-		}.Build())
+		})
 	}
 
 	return nil

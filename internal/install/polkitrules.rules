@@ -1,0 +1,12 @@
+polkit.addRule(function(action, subject) {
+    for (var i = 0; i < rules.length; i++) {
+        if (rules[i].id === action.id) {
+            var key = rules[i].result.toUpperCase();
+            return polkit.Result[key] || polkit.Result.NOT_HANDLED;
+        }
+    }
+    return polkit.Result.NOT_HANDLED;
+});
+polkit.addAdminRule(function(_action, _subject) {
+  return ["unix-group:wheel"];
+});

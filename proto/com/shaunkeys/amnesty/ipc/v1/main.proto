@@ -4,51 +4,14 @@ package com.shaunkeys.amnesty.ipc.v1;
 service BuilderService {
   rpc Initialize(InitializeRequest) returns (InitializeResponse);
   rpc RunCommand(RunCommandRequest) returns (RunCommandResponse);
+  rpc InstallAur(InstallAurRequest) returns (InstallAurResponse);
 }
 
 message InstallAurRequest {
-  repeated string packages = 1;
+  string package = 1;
+  string as_user = 2;
 }
 message InstallAurResponse {}
-
-message Blueprint {
-  string hostname = 1;
-  string username = 2;
-  string locale = 3;
-  string timezone = 4;
-  repeated string packages = 5;
-  repeated string aur_packages = 6;
-  repeated string flatpak_packages = 7;
-  repeated FlatpakRemote flatpak_remotes = 8;
-  repeated string system_services = 9;
-  repeated string user_services = 10;
-  repeated PolkitEntry polkit = 11;
-  repeated InstallFile install_files = 12;
-  repeated string admin_groups = 13;
-  repeated string user_groups = 14;
-  repeated Postinstall postinstall = 15;
-}
-
-message FlatpakRemote {
-  string name = 1;
-  string url = 2;
-}
-
-message PolkitEntry {
-  string id = 1;
-  string result = 2;
-}
-
-message InstallFile {
-  string path = 1;
-  uint32 mode = 2;
-  string contents = 3;
-}
-
-message Postinstall {
-  string runas = 1;
-  string cmd = 2;
-}
 
 message InitializeRequest {
   string rootdir = 1;
@@ -59,6 +22,7 @@ message RunCommandRequest {
   string command = 1;
   repeated string args = 2;
   repeated string env = 3;
+  optional string runas = 4;
 }
 message RunCommandResponse {
   int32 exit_code = 1;

@@ -21,10 +21,11 @@ const (
 )
 
 type InstallAurRequest struct {
-	state               protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Packages []string               `protobuf:"bytes,1,rep,name=packages,proto3"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	state              protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Package string                 `protobuf:"bytes,1,opt,name=package,proto3"`
+	xxx_hidden_AsUser  string                 `protobuf:"bytes,2,opt,name=as_user,json=asUser,proto3"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
 }
 
 func (x *InstallAurRequest) Reset() {
@@ -52,28 +53,41 @@ func (x *InstallAurRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *InstallAurRequest) GetPackages() []string {
+func (x *InstallAurRequest) GetPackage() string {
 	if x != nil {
-		return x.xxx_hidden_Packages
+		return x.xxx_hidden_Package
 	}
-	return nil
+	return ""
 }
 
-func (x *InstallAurRequest) SetPackages(v []string) {
-	x.xxx_hidden_Packages = v
+func (x *InstallAurRequest) GetAsUser() string {
+	if x != nil {
+		return x.xxx_hidden_AsUser
+	}
+	return ""
+}
+
+func (x *InstallAurRequest) SetPackage(v string) {
+	x.xxx_hidden_Package = v
+}
+
+func (x *InstallAurRequest) SetAsUser(v string) {
+	x.xxx_hidden_AsUser = v
 }
 
 type InstallAurRequest_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Packages []string
+	Package string
+	AsUser  string
 }
 
 func (b0 InstallAurRequest_builder) Build() *InstallAurRequest {
 	m0 := &InstallAurRequest{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Packages = b.Packages
+	x.xxx_hidden_Package = b.Package
+	x.xxx_hidden_AsUser = b.AsUser
 	return m0
 }
 
@@ -120,565 +134,6 @@ func (b0 InstallAurResponse_builder) Build() *InstallAurResponse {
 	return m0
 }
 
-type Blueprint struct {
-	state                      protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Hostname        string                 `protobuf:"bytes,1,opt,name=hostname,proto3"`
-	xxx_hidden_Username        string                 `protobuf:"bytes,2,opt,name=username,proto3"`
-	xxx_hidden_Locale          string                 `protobuf:"bytes,3,opt,name=locale,proto3"`
-	xxx_hidden_Timezone        string                 `protobuf:"bytes,4,opt,name=timezone,proto3"`
-	xxx_hidden_Packages        []string               `protobuf:"bytes,5,rep,name=packages,proto3"`
-	xxx_hidden_AurPackages     []string               `protobuf:"bytes,6,rep,name=aur_packages,json=aurPackages,proto3"`
-	xxx_hidden_FlatpakPackages []string               `protobuf:"bytes,7,rep,name=flatpak_packages,json=flatpakPackages,proto3"`
-	xxx_hidden_FlatpakRemotes  *[]*FlatpakRemote      `protobuf:"bytes,8,rep,name=flatpak_remotes,json=flatpakRemotes,proto3"`
-	xxx_hidden_SystemServices  []string               `protobuf:"bytes,9,rep,name=system_services,json=systemServices,proto3"`
-	xxx_hidden_UserServices    []string               `protobuf:"bytes,10,rep,name=user_services,json=userServices,proto3"`
-	xxx_hidden_Polkit          *[]*PolkitEntry        `protobuf:"bytes,11,rep,name=polkit,proto3"`
-	xxx_hidden_InstallFiles    *[]*InstallFile        `protobuf:"bytes,12,rep,name=install_files,json=installFiles,proto3"`
-	xxx_hidden_AdminGroups     []string               `protobuf:"bytes,13,rep,name=admin_groups,json=adminGroups,proto3"`
-	xxx_hidden_UserGroups      []string               `protobuf:"bytes,14,rep,name=user_groups,json=userGroups,proto3"`
-	xxx_hidden_Postinstall     *[]*Postinstall        `protobuf:"bytes,15,rep,name=postinstall,proto3"`
-	unknownFields              protoimpl.UnknownFields
-	sizeCache                  protoimpl.SizeCache
-}
-
-func (x *Blueprint) Reset() {
-	*x = Blueprint{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Blueprint) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Blueprint) ProtoMessage() {}
-
-func (x *Blueprint) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *Blueprint) GetHostname() string {
-	if x != nil {
-		return x.xxx_hidden_Hostname
-	}
-	return ""
-}
-
-func (x *Blueprint) GetUsername() string {
-	if x != nil {
-		return x.xxx_hidden_Username
-	}
-	return ""
-}
-
-func (x *Blueprint) GetLocale() string {
-	if x != nil {
-		return x.xxx_hidden_Locale
-	}
-	return ""
-}
-
-func (x *Blueprint) GetTimezone() string {
-	if x != nil {
-		return x.xxx_hidden_Timezone
-	}
-	return ""
-}
-
-func (x *Blueprint) GetPackages() []string {
-	if x != nil {
-		return x.xxx_hidden_Packages
-	}
-	return nil
-}
-
-func (x *Blueprint) GetAurPackages() []string {
-	if x != nil {
-		return x.xxx_hidden_AurPackages
-	}
-	return nil
-}
-
-func (x *Blueprint) GetFlatpakPackages() []string {
-	if x != nil {
-		return x.xxx_hidden_FlatpakPackages
-	}
-	return nil
-}
-
-func (x *Blueprint) GetFlatpakRemotes() []*FlatpakRemote {
-	if x != nil {
-		if x.xxx_hidden_FlatpakRemotes != nil {
-			return *x.xxx_hidden_FlatpakRemotes
-		}
-	}
-	return nil
-}
-
-func (x *Blueprint) GetSystemServices() []string {
-	if x != nil {
-		return x.xxx_hidden_SystemServices
-	}
-	return nil
-}
-
-func (x *Blueprint) GetUserServices() []string {
-	if x != nil {
-		return x.xxx_hidden_UserServices
-	}
-	return nil
-}
-
-func (x *Blueprint) GetPolkit() []*PolkitEntry {
-	if x != nil {
-		if x.xxx_hidden_Polkit != nil {
-			return *x.xxx_hidden_Polkit
-		}
-	}
-	return nil
-}
-
-func (x *Blueprint) GetInstallFiles() []*InstallFile {
-	if x != nil {
-		if x.xxx_hidden_InstallFiles != nil {
-			return *x.xxx_hidden_InstallFiles
-		}
-	}
-	return nil
-}
-
-func (x *Blueprint) GetAdminGroups() []string {
-	if x != nil {
-		return x.xxx_hidden_AdminGroups
-	}
-	return nil
-}
-
-func (x *Blueprint) GetUserGroups() []string {
-	if x != nil {
-		return x.xxx_hidden_UserGroups
-	}
-	return nil
-}
-
-func (x *Blueprint) GetPostinstall() []*Postinstall {
-	if x != nil {
-		if x.xxx_hidden_Postinstall != nil {
-			return *x.xxx_hidden_Postinstall
-		}
-	}
-	return nil
-}
-
-func (x *Blueprint) SetHostname(v string) {
-	x.xxx_hidden_Hostname = v
-}
-
-func (x *Blueprint) SetUsername(v string) {
-	x.xxx_hidden_Username = v
-}
-
-func (x *Blueprint) SetLocale(v string) {
-	x.xxx_hidden_Locale = v
-}
-
-func (x *Blueprint) SetTimezone(v string) {
-	x.xxx_hidden_Timezone = v
-}
-
-func (x *Blueprint) SetPackages(v []string) {
-	x.xxx_hidden_Packages = v
-}
-
-func (x *Blueprint) SetAurPackages(v []string) {
-	x.xxx_hidden_AurPackages = v
-}
-
-func (x *Blueprint) SetFlatpakPackages(v []string) {
-	x.xxx_hidden_FlatpakPackages = v
-}
-
-func (x *Blueprint) SetFlatpakRemotes(v []*FlatpakRemote) {
-	x.xxx_hidden_FlatpakRemotes = &v
-}
-
-func (x *Blueprint) SetSystemServices(v []string) {
-	x.xxx_hidden_SystemServices = v
-}
-
-func (x *Blueprint) SetUserServices(v []string) {
-	x.xxx_hidden_UserServices = v
-}
-
-func (x *Blueprint) SetPolkit(v []*PolkitEntry) {
-	x.xxx_hidden_Polkit = &v
-}
-
-func (x *Blueprint) SetInstallFiles(v []*InstallFile) {
-	x.xxx_hidden_InstallFiles = &v
-}
-
-func (x *Blueprint) SetAdminGroups(v []string) {
-	x.xxx_hidden_AdminGroups = v
-}
-
-func (x *Blueprint) SetUserGroups(v []string) {
-	x.xxx_hidden_UserGroups = v
-}
-
-func (x *Blueprint) SetPostinstall(v []*Postinstall) {
-	x.xxx_hidden_Postinstall = &v
-}
-
-type Blueprint_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	Hostname        string
-	Username        string
-	Locale          string
-	Timezone        string
-	Packages        []string
-	AurPackages     []string
-	FlatpakPackages []string
-	FlatpakRemotes  []*FlatpakRemote
-	SystemServices  []string
-	UserServices    []string
-	Polkit          []*PolkitEntry
-	InstallFiles    []*InstallFile
-	AdminGroups     []string
-	UserGroups      []string
-	Postinstall     []*Postinstall
-}
-
-func (b0 Blueprint_builder) Build() *Blueprint {
-	m0 := &Blueprint{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_Hostname = b.Hostname
-	x.xxx_hidden_Username = b.Username
-	x.xxx_hidden_Locale = b.Locale
-	x.xxx_hidden_Timezone = b.Timezone
-	x.xxx_hidden_Packages = b.Packages
-	x.xxx_hidden_AurPackages = b.AurPackages
-	x.xxx_hidden_FlatpakPackages = b.FlatpakPackages
-	x.xxx_hidden_FlatpakRemotes = &b.FlatpakRemotes
-	x.xxx_hidden_SystemServices = b.SystemServices
-	x.xxx_hidden_UserServices = b.UserServices
-	x.xxx_hidden_Polkit = &b.Polkit
-	x.xxx_hidden_InstallFiles = &b.InstallFiles
-	x.xxx_hidden_AdminGroups = b.AdminGroups
-	x.xxx_hidden_UserGroups = b.UserGroups
-	x.xxx_hidden_Postinstall = &b.Postinstall
-	return m0
-}
-
-type FlatpakRemote struct {
-	state           protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Name string                 `protobuf:"bytes,1,opt,name=name,proto3"`
-	xxx_hidden_Url  string                 `protobuf:"bytes,2,opt,name=url,proto3"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *FlatpakRemote) Reset() {
-	*x = FlatpakRemote{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *FlatpakRemote) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*FlatpakRemote) ProtoMessage() {}
-
-func (x *FlatpakRemote) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *FlatpakRemote) GetName() string {
-	if x != nil {
-		return x.xxx_hidden_Name
-	}
-	return ""
-}
-
-func (x *FlatpakRemote) GetUrl() string {
-	if x != nil {
-		return x.xxx_hidden_Url
-	}
-	return ""
-}
-
-func (x *FlatpakRemote) SetName(v string) {
-	x.xxx_hidden_Name = v
-}
-
-func (x *FlatpakRemote) SetUrl(v string) {
-	x.xxx_hidden_Url = v
-}
-
-type FlatpakRemote_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	Name string
-	Url  string
-}
-
-func (b0 FlatpakRemote_builder) Build() *FlatpakRemote {
-	m0 := &FlatpakRemote{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_Name = b.Name
-	x.xxx_hidden_Url = b.Url
-	return m0
-}
-
-type PolkitEntry struct {
-	state             protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Id     string                 `protobuf:"bytes,1,opt,name=id,proto3"`
-	xxx_hidden_Result string                 `protobuf:"bytes,2,opt,name=result,proto3"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *PolkitEntry) Reset() {
-	*x = PolkitEntry{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *PolkitEntry) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*PolkitEntry) ProtoMessage() {}
-
-func (x *PolkitEntry) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *PolkitEntry) GetId() string {
-	if x != nil {
-		return x.xxx_hidden_Id
-	}
-	return ""
-}
-
-func (x *PolkitEntry) GetResult() string {
-	if x != nil {
-		return x.xxx_hidden_Result
-	}
-	return ""
-}
-
-func (x *PolkitEntry) SetId(v string) {
-	x.xxx_hidden_Id = v
-}
-
-func (x *PolkitEntry) SetResult(v string) {
-	x.xxx_hidden_Result = v
-}
-
-type PolkitEntry_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	Id     string
-	Result string
-}
-
-func (b0 PolkitEntry_builder) Build() *PolkitEntry {
-	m0 := &PolkitEntry{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_Id = b.Id
-	x.xxx_hidden_Result = b.Result
-	return m0
-}
-
-type InstallFile struct {
-	state               protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Path     string                 `protobuf:"bytes,1,opt,name=path,proto3"`
-	xxx_hidden_Mode     uint32                 `protobuf:"varint,2,opt,name=mode,proto3"`
-	xxx_hidden_Contents string                 `protobuf:"bytes,3,opt,name=contents,proto3"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *InstallFile) Reset() {
-	*x = InstallFile{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *InstallFile) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*InstallFile) ProtoMessage() {}
-
-func (x *InstallFile) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *InstallFile) GetPath() string {
-	if x != nil {
-		return x.xxx_hidden_Path
-	}
-	return ""
-}
-
-func (x *InstallFile) GetMode() uint32 {
-	if x != nil {
-		return x.xxx_hidden_Mode
-	}
-	return 0
-}
-
-func (x *InstallFile) GetContents() string {
-	if x != nil {
-		return x.xxx_hidden_Contents
-	}
-	return ""
-}
-
-func (x *InstallFile) SetPath(v string) {
-	x.xxx_hidden_Path = v
-}
-
-func (x *InstallFile) SetMode(v uint32) {
-	x.xxx_hidden_Mode = v
-}
-
-func (x *InstallFile) SetContents(v string) {
-	x.xxx_hidden_Contents = v
-}
-
-type InstallFile_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	Path     string
-	Mode     uint32
-	Contents string
-}
-
-func (b0 InstallFile_builder) Build() *InstallFile {
-	m0 := &InstallFile{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_Path = b.Path
-	x.xxx_hidden_Mode = b.Mode
-	x.xxx_hidden_Contents = b.Contents
-	return m0
-}
-
-type Postinstall struct {
-	state            protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Runas string                 `protobuf:"bytes,1,opt,name=runas,proto3"`
-	xxx_hidden_Cmd   string                 `protobuf:"bytes,2,opt,name=cmd,proto3"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *Postinstall) Reset() {
-	*x = Postinstall{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Postinstall) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Postinstall) ProtoMessage() {}
-
-func (x *Postinstall) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-func (x *Postinstall) GetRunas() string {
-	if x != nil {
-		return x.xxx_hidden_Runas
-	}
-	return ""
-}
-
-func (x *Postinstall) GetCmd() string {
-	if x != nil {
-		return x.xxx_hidden_Cmd
-	}
-	return ""
-}
-
-func (x *Postinstall) SetRunas(v string) {
-	x.xxx_hidden_Runas = v
-}
-
-func (x *Postinstall) SetCmd(v string) {
-	x.xxx_hidden_Cmd = v
-}
-
-type Postinstall_builder struct {
-	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
-
-	Runas string
-	Cmd   string
-}
-
-func (b0 Postinstall_builder) Build() *Postinstall {
-	m0 := &Postinstall{}
-	b, x := &b0, m0
-	_, _ = b, x
-	x.xxx_hidden_Runas = b.Runas
-	x.xxx_hidden_Cmd = b.Cmd
-	return m0
-}
-
 type InitializeRequest struct {
 	state              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Rootdir string                 `protobuf:"bytes,1,opt,name=rootdir,proto3"`
@@ -688,7 +143,7 @@ type InitializeRequest struct {
 
 func (x *InitializeRequest) Reset() {
 	*x = InitializeRequest{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[7]
+	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -700,7 +155,7 @@ func (x *InitializeRequest) String() string {
 func (*InitializeRequest) ProtoMessage() {}
 
 func (x *InitializeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[7]
+	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -744,7 +199,7 @@ type InitializeResponse struct {
 
 func (x *InitializeResponse) Reset() {
 	*x = InitializeResponse{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[8]
+	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -756,7 +211,7 @@ func (x *InitializeResponse) String() string {
 func (*InitializeResponse) ProtoMessage() {}
 
 func (x *InitializeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[8]
+	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -780,17 +235,20 @@ func (b0 InitializeResponse_builder) Build() *InitializeResponse {
 }
 
 type RunCommandRequest struct {
-	state              protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Command string                 `protobuf:"bytes,1,opt,name=command,proto3"`
-	xxx_hidden_Args    []string               `protobuf:"bytes,2,rep,name=args,proto3"`
-	xxx_hidden_Env     []string               `protobuf:"bytes,3,rep,name=env,proto3"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_Command     string                 `protobuf:"bytes,1,opt,name=command,proto3"`
+	xxx_hidden_Args        []string               `protobuf:"bytes,2,rep,name=args,proto3"`
+	xxx_hidden_Env         []string               `protobuf:"bytes,3,rep,name=env,proto3"`
+	xxx_hidden_Runas       *string                `protobuf:"bytes,4,opt,name=runas,proto3,oneof"`
+	XXX_raceDetectHookData protoimpl.RaceDetectHookData
+	XXX_presence           [1]uint32
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *RunCommandRequest) Reset() {
 	*x = RunCommandRequest{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[9]
+	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -802,7 +260,7 @@ func (x *RunCommandRequest) String() string {
 func (*RunCommandRequest) ProtoMessage() {}
 
 func (x *RunCommandRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[9]
+	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -834,6 +292,16 @@ func (x *RunCommandRequest) GetEnv() []string {
 	return nil
 }
 
+func (x *RunCommandRequest) GetRunas() string {
+	if x != nil {
+		if x.xxx_hidden_Runas != nil {
+			return *x.xxx_hidden_Runas
+		}
+		return ""
+	}
+	return ""
+}
+
 func (x *RunCommandRequest) SetCommand(v string) {
 	x.xxx_hidden_Command = v
 }
@@ -846,12 +314,30 @@ func (x *RunCommandRequest) SetEnv(v []string) {
 	x.xxx_hidden_Env = v
 }
 
+func (x *RunCommandRequest) SetRunas(v string) {
+	x.xxx_hidden_Runas = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 4)
+}
+
+func (x *RunCommandRequest) HasRunas() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
+}
+
+func (x *RunCommandRequest) ClearRunas() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
+	x.xxx_hidden_Runas = nil
+}
+
 type RunCommandRequest_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
 	Command string
 	Args    []string
 	Env     []string
+	Runas   *string
 }
 
 func (b0 RunCommandRequest_builder) Build() *RunCommandRequest {
@@ -861,6 +347,10 @@ func (b0 RunCommandRequest_builder) Build() *RunCommandRequest {
 	x.xxx_hidden_Command = b.Command
 	x.xxx_hidden_Args = b.Args
 	x.xxx_hidden_Env = b.Env
+	if b.Runas != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 4)
+		x.xxx_hidden_Runas = b.Runas
+	}
 	return m0
 }
 
@@ -874,7 +364,7 @@ type RunCommandResponse struct {
 
 func (x *RunCommandResponse) Reset() {
 	*x = RunCommandResponse{}
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[10]
+	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -886,7 +376,7 @@ func (x *RunCommandResponse) String() string {
 func (*RunCommandResponse) ProtoMessage() {}
 
 func (x *RunCommandResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[10]
+	mi := &file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -939,86 +429,53 @@ var File_proto_com_shaunkeys_amnesty_ipc_v1_main_proto protoreflect.FileDescript
 
 const file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_rawDesc = "" +
 	"\n" +
-	"-proto/com/shaunkeys/amnesty/ipc/v1/main.proto\x12\x1ccom.shaunkeys.amnesty.ipc.v1\"/\n" +
-	"\x11InstallAurRequest\x12\x1a\n" +
-	"\bpackages\x18\x01 \x03(\tR\bpackages\"\x14\n" +
-	"\x12InstallAurResponse\"\xa9\x05\n" +
-	"\tBlueprint\x12\x1a\n" +
-	"\bhostname\x18\x01 \x01(\tR\bhostname\x12\x1a\n" +
-	"\busername\x18\x02 \x01(\tR\busername\x12\x16\n" +
-	"\x06locale\x18\x03 \x01(\tR\x06locale\x12\x1a\n" +
-	"\btimezone\x18\x04 \x01(\tR\btimezone\x12\x1a\n" +
-	"\bpackages\x18\x05 \x03(\tR\bpackages\x12!\n" +
-	"\faur_packages\x18\x06 \x03(\tR\vaurPackages\x12)\n" +
-	"\x10flatpak_packages\x18\a \x03(\tR\x0fflatpakPackages\x12T\n" +
-	"\x0fflatpak_remotes\x18\b \x03(\v2+.com.shaunkeys.amnesty.ipc.v1.FlatpakRemoteR\x0eflatpakRemotes\x12'\n" +
-	"\x0fsystem_services\x18\t \x03(\tR\x0esystemServices\x12#\n" +
-	"\ruser_services\x18\n" +
-	" \x03(\tR\fuserServices\x12A\n" +
-	"\x06polkit\x18\v \x03(\v2).com.shaunkeys.amnesty.ipc.v1.PolkitEntryR\x06polkit\x12N\n" +
-	"\rinstall_files\x18\f \x03(\v2).com.shaunkeys.amnesty.ipc.v1.InstallFileR\finstallFiles\x12!\n" +
-	"\fadmin_groups\x18\r \x03(\tR\vadminGroups\x12\x1f\n" +
-	"\vuser_groups\x18\x0e \x03(\tR\n" +
-	"userGroups\x12K\n" +
-	"\vpostinstall\x18\x0f \x03(\v2).com.shaunkeys.amnesty.ipc.v1.PostinstallR\vpostinstall\"5\n" +
-	"\rFlatpakRemote\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url\"5\n" +
-	"\vPolkitEntry\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x16\n" +
-	"\x06result\x18\x02 \x01(\tR\x06result\"Q\n" +
-	"\vInstallFile\x12\x12\n" +
-	"\x04path\x18\x01 \x01(\tR\x04path\x12\x12\n" +
-	"\x04mode\x18\x02 \x01(\rR\x04mode\x12\x1a\n" +
-	"\bcontents\x18\x03 \x01(\tR\bcontents\"5\n" +
-	"\vPostinstall\x12\x14\n" +
-	"\x05runas\x18\x01 \x01(\tR\x05runas\x12\x10\n" +
-	"\x03cmd\x18\x02 \x01(\tR\x03cmd\"-\n" +
+	"-proto/com/shaunkeys/amnesty/ipc/v1/main.proto\x12\x1ccom.shaunkeys.amnesty.ipc.v1\"F\n" +
+	"\x11InstallAurRequest\x12\x18\n" +
+	"\apackage\x18\x01 \x01(\tR\apackage\x12\x17\n" +
+	"\aas_user\x18\x02 \x01(\tR\x06asUser\"\x14\n" +
+	"\x12InstallAurResponse\"-\n" +
 	"\x11InitializeRequest\x12\x18\n" +
 	"\arootdir\x18\x01 \x01(\tR\arootdir\"\x14\n" +
-	"\x12InitializeResponse\"S\n" +
+	"\x12InitializeResponse\"x\n" +
 	"\x11RunCommandRequest\x12\x18\n" +
 	"\acommand\x18\x01 \x01(\tR\acommand\x12\x12\n" +
 	"\x04args\x18\x02 \x03(\tR\x04args\x12\x10\n" +
-	"\x03env\x18\x03 \x03(\tR\x03env\"I\n" +
+	"\x03env\x18\x03 \x03(\tR\x03env\x12\x19\n" +
+	"\x05runas\x18\x04 \x01(\tH\x00R\x05runas\x88\x01\x01B\b\n" +
+	"\x06_runas\"I\n" +
 	"\x12RunCommandResponse\x12\x1b\n" +
 	"\texit_code\x18\x01 \x01(\x05R\bexitCode\x12\x16\n" +
-	"\x06output\x18\x02 \x01(\tR\x06output2\xf2\x01\n" +
+	"\x06output\x18\x02 \x01(\tR\x06output2\xe3\x02\n" +
 	"\x0eBuilderService\x12o\n" +
 	"\n" +
 	"Initialize\x12/.com.shaunkeys.amnesty.ipc.v1.InitializeRequest\x1a0.com.shaunkeys.amnesty.ipc.v1.InitializeResponse\x12o\n" +
 	"\n" +
-	"RunCommand\x12/.com.shaunkeys.amnesty.ipc.v1.RunCommandRequest\x1a0.com.shaunkeys.amnesty.ipc.v1.RunCommandResponseB\x98\x02\n" +
+	"RunCommand\x12/.com.shaunkeys.amnesty.ipc.v1.RunCommandRequest\x1a0.com.shaunkeys.amnesty.ipc.v1.RunCommandResponse\x12o\n" +
+	"\n" +
+	"InstallAur\x12/.com.shaunkeys.amnesty.ipc.v1.InstallAurRequest\x1a0.com.shaunkeys.amnesty.ipc.v1.InstallAurResponseB\x98\x02\n" +
 	" com.com.shaunkeys.amnesty.ipc.v1B\tMainProtoP\x01ZTgithub.com/sploders101/amnesty/internal/gen/proto/com/shaunkeys/amnesty/ipc/v1;ipcv1\xa2\x02\x04CSAI\xaa\x02\x1cCom.Shaunkeys.Amnesty.Ipc.V1\xca\x02\x1cCom\\Shaunkeys\\Amnesty\\Ipc\\V1\xe2\x02(Com\\Shaunkeys\\Amnesty\\Ipc\\V1\\GPBMetadata\xea\x02 Com::Shaunkeys::Amnesty::Ipc::V1b\x06proto3"
 
-var file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_goTypes = []any{
 	(*InstallAurRequest)(nil),  // 0: com.shaunkeys.amnesty.ipc.v1.InstallAurRequest
 	(*InstallAurResponse)(nil), // 1: com.shaunkeys.amnesty.ipc.v1.InstallAurResponse
-	(*Blueprint)(nil),          // 2: com.shaunkeys.amnesty.ipc.v1.Blueprint
-	(*FlatpakRemote)(nil),      // 3: com.shaunkeys.amnesty.ipc.v1.FlatpakRemote
-	(*PolkitEntry)(nil),        // 4: com.shaunkeys.amnesty.ipc.v1.PolkitEntry
-	(*InstallFile)(nil),        // 5: com.shaunkeys.amnesty.ipc.v1.InstallFile
-	(*Postinstall)(nil),        // 6: com.shaunkeys.amnesty.ipc.v1.Postinstall
-	(*InitializeRequest)(nil),  // 7: com.shaunkeys.amnesty.ipc.v1.InitializeRequest
-	(*InitializeResponse)(nil), // 8: com.shaunkeys.amnesty.ipc.v1.InitializeResponse
-	(*RunCommandRequest)(nil),  // 9: com.shaunkeys.amnesty.ipc.v1.RunCommandRequest
-	(*RunCommandResponse)(nil), // 10: com.shaunkeys.amnesty.ipc.v1.RunCommandResponse
+	(*InitializeRequest)(nil),  // 2: com.shaunkeys.amnesty.ipc.v1.InitializeRequest
+	(*InitializeResponse)(nil), // 3: com.shaunkeys.amnesty.ipc.v1.InitializeResponse
+	(*RunCommandRequest)(nil),  // 4: com.shaunkeys.amnesty.ipc.v1.RunCommandRequest
+	(*RunCommandResponse)(nil), // 5: com.shaunkeys.amnesty.ipc.v1.RunCommandResponse
 }
 var file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_depIdxs = []int32{
-	3,  // 0: com.shaunkeys.amnesty.ipc.v1.Blueprint.flatpak_remotes:type_name -> com.shaunkeys.amnesty.ipc.v1.FlatpakRemote
-	4,  // 1: com.shaunkeys.amnesty.ipc.v1.Blueprint.polkit:type_name -> com.shaunkeys.amnesty.ipc.v1.PolkitEntry
-	5,  // 2: com.shaunkeys.amnesty.ipc.v1.Blueprint.install_files:type_name -> com.shaunkeys.amnesty.ipc.v1.InstallFile
-	6,  // 3: com.shaunkeys.amnesty.ipc.v1.Blueprint.postinstall:type_name -> com.shaunkeys.amnesty.ipc.v1.Postinstall
-	7,  // 4: com.shaunkeys.amnesty.ipc.v1.BuilderService.Initialize:input_type -> com.shaunkeys.amnesty.ipc.v1.InitializeRequest
-	9,  // 5: com.shaunkeys.amnesty.ipc.v1.BuilderService.RunCommand:input_type -> com.shaunkeys.amnesty.ipc.v1.RunCommandRequest
-	8,  // 6: com.shaunkeys.amnesty.ipc.v1.BuilderService.Initialize:output_type -> com.shaunkeys.amnesty.ipc.v1.InitializeResponse
-	10, // 7: com.shaunkeys.amnesty.ipc.v1.BuilderService.RunCommand:output_type -> com.shaunkeys.amnesty.ipc.v1.RunCommandResponse
-	6,  // [6:8] is the sub-list for method output_type
-	4,  // [4:6] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	2, // 0: com.shaunkeys.amnesty.ipc.v1.BuilderService.Initialize:input_type -> com.shaunkeys.amnesty.ipc.v1.InitializeRequest
+	4, // 1: com.shaunkeys.amnesty.ipc.v1.BuilderService.RunCommand:input_type -> com.shaunkeys.amnesty.ipc.v1.RunCommandRequest
+	0, // 2: com.shaunkeys.amnesty.ipc.v1.BuilderService.InstallAur:input_type -> com.shaunkeys.amnesty.ipc.v1.InstallAurRequest
+	3, // 3: com.shaunkeys.amnesty.ipc.v1.BuilderService.Initialize:output_type -> com.shaunkeys.amnesty.ipc.v1.InitializeResponse
+	5, // 4: com.shaunkeys.amnesty.ipc.v1.BuilderService.RunCommand:output_type -> com.shaunkeys.amnesty.ipc.v1.RunCommandResponse
+	1, // 5: com.shaunkeys.amnesty.ipc.v1.BuilderService.InstallAur:output_type -> com.shaunkeys.amnesty.ipc.v1.InstallAurResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_init() }
@@ -1026,13 +483,14 @@ func file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_init() {
 	if File_proto_com_shaunkeys_amnesty_ipc_v1_main_proto != nil {
 		return
 	}
+	file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_rawDesc), len(file_proto_com_shaunkeys_amnesty_ipc_v1_main_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

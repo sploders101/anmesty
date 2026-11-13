@@ -24,10 +24,12 @@ func main() {
 		// This isn't a CLI. Start the build API service.
 		ipcFd, err := strconv.Atoi(ipcFdStr)
 		if err != nil {
-			slog.Error("")
+			slog.Error("Failed to parse IPC file descriptor", "error", err)
 		}
 
-		runBuildService(ipcFd)
+		if err := runBuildService(ipcFd); err != nil {
+			slog.Error("Build service failed", "error", err)
+		}
 
 		os.Exit(0)
 		return

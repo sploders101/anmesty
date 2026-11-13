@@ -70,19 +70,36 @@ func EnableLocales(locgenPath string, chosenLocale string) error {
 }
 
 // TODO: Not finished
-func InstallAurPackages(rootfsPath string, aurPackages []string) error {
+func InstallAurPackages(
+	ctx context.Context,
+	container buildserver.BuildServer,
+	asUser string,
+	rootfsPath string,
+	aurPackages []string,
+) error {
 	// Set up nopasswd sudo for primary user to install AUR packages
 	// TODO: Once we're plumbed into the COW semantics of btrfs, we could fork the system to build AUR packages,
 	// thus eliminating the need to do this in the user's actual system.
-	sudoerNopassPath := filepath.Join(rootfsPath, "etc/sudoers.d/system_setup.conf")
+	sudoerNopassPath := filepath.Join(rootfsPath, "etc/sudoers.d/system_setup")
 	if err := os.WriteFile(
 		sudoerNopassPath,
-		[]byte("%sudo ALL=(ALL:ALL) NOPASSWD: ALL\n"),
-		0o700,
+		[]byte("%wheel ALL=(ALL:ALL) NOPASSWD: ALL\n"),
+		0o550,
 	); err != nil {
 		return fmt.Errorf("failed to set up nopasswd sudo for user: %w", err)
 	}
-	// TODO: Do AUR installs here.
+
+	for _, pkg := range aurPackages {
+		slog.Info("Installing AUR package", "package", pkg)
+		_, err := container.Client.InstallAur(ctx, ipcv1.InstallAurRequest_builder{
+			Package: pkg,
+			AsUser:  asUser,
+		}.Build())
+		if err != nil {
+			return fmt.Errorf("failed to install aur package %q: %w", pkg, err)
+		}
+	}
+
 	if err := os.Remove(sudoerNopassPath); err != nil {
 		return fmt.Errorf("failed to clean up nopasswd sudo for user: %w", err)
 	}
@@ -122,9 +139,6 @@ func SetupLocales(
 
 func SetupTimezone(rootfsPath string, blueprint *blueprint.Blueprint) error {
 	localtimePath := filepath.Join(rootfsPath, "etc/localtime")
-	if err := os.Remove(localtimePath); err != nil && !errors.Is(err, os.ErrExist) {
-		return fmt.Errorf("failed to remove existing /etc/localtime: %w", err)
-	}
 	if err := os.Symlink(
 		filepath.Join("/usr/share/zoneinfo/", blueprint.Timezone),
 		localtimePath,

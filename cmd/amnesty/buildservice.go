@@ -4,10 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 	"net"
 	"os"
 	"os/exec"
+	"os/user"
 	"path/filepath"
+	"strconv"
 	"sync"
 	"syscall"
 
@@ -103,19 +106,22 @@ func (buildService) Initialize(
 
 	// Mount API filesystems
 	if err := syscall.Mount(
-		"devtmpfs",
+		"/dev",
 		filepath.Join(rootDir, "dev"),
-		"devtmpfs",
-		0,
+		"",
+		syscall.MS_BIND|syscall.MS_REC,
 		"",
 	); err != nil {
-		return nil, fmt.Errorf("failed to mount /dev: %w", err)
+		return nil, fmt.Errorf("failed to bind mount /dev: %w", err)
 	}
 	if err := syscall.Mount("proc", filepath.Join(rootDir, "proc"), "proc", 0, ""); err != nil {
 		return nil, fmt.Errorf("failed to mount /proc: %w", err)
 	}
 	if err := syscall.Mount("tmpfs", filepath.Join(rootDir, "tmp"), "tmpfs", 0, ""); err != nil {
 		return nil, fmt.Errorf("failed to mount /tmp: %w", err)
+	}
+	if err := os.Chmod(filepath.Join(rootDir, "tmp"), 0o777); err != nil {
+		return nil, fmt.Errorf("failed to chmod /tmp: %w", err)
 	}
 	if err := syscall.Mount("sysfs", filepath.Join(rootDir, "sys"), "sysfs", 0, ""); err != nil {
 		return nil, fmt.Errorf("failed to mount /sys: %w", err)
@@ -143,6 +149,15 @@ func (buildService) RunCommand(
 ) (*ipcv1.RunCommandResponse, error) {
 	cmd := exec.CommandContext(ctx, req.GetCommand(), req.GetArgs()...)
 	cmd.Env = append(os.Environ(), req.GetEnv()...)
+	if req.HasRunas() {
+		cred, err := getCredential(req.GetRunas())
+		if err != nil {
+			return nil, err
+		}
+		cmd.SysProcAttr = &syscall.SysProcAttr{
+			Credential: cred,
+		}
+	}
 	output, err := cmd.CombinedOutput()
 	var exitCode int32
 	if err != nil {
@@ -157,4 +172,122 @@ func (buildService) RunCommand(
 		ExitCode: exitCode,
 		Output:   string(output),
 	}.Build(), nil
+}
+
+func (buildService) InstallAur(
+	ctx context.Context,
+	req *ipcv1.InstallAurRequest,
+) (*ipcv1.InstallAurResponse, error) {
+	userCredential, err := getCredential(req.GetAsUser())
+	if err != nil {
+		return nil, fmt.Errorf("failed to get user credential: %w", err)
+	}
+	userEnv := buildUserEnv(req.GetAsUser())
+
+	if err := os.Mkdir("/var/tmp/aurs", 0o777); err != nil {
+		if !errors.Is(err, os.ErrExist) {
+			return nil, fmt.Errorf("failed to mkdir /var/tmp/aurs: %w", err)
+		}
+	} else {
+		if err := os.Chown(
+			"/var/tmp/aurs",
+			int(userCredential.Uid),
+			int(userCredential.Gid),
+		); err != nil {
+			return nil, fmt.Errorf("failed to chown dir: %w", err)
+		}
+	}
+
+	pkgDir := filepath.Join("/var/tmp/aurs", req.GetPackage())
+	defer func() {
+		if err := os.RemoveAll(pkgDir); err != nil {
+			slog.Error("Failed to clean up aur install", "package", req.GetPackage(), "error", err)
+		}
+	}()
+
+	cloneCmd := exec.CommandContext(
+		ctx,
+		"git",
+		"clone",
+		fmt.Sprintf("https://aur.archlinux.org/%v.git", req.GetPackage()),
+		req.GetPackage(),
+	)
+	cloneCmd.Env = userEnv
+	cloneCmd.Dir = "/var/tmp/aurs"
+	cloneCmd.SysProcAttr = &syscall.SysProcAttr{
+		Credential: userCredential,
+	}
+	cloneOutput, err := cloneCmd.CombinedOutput()
+	if err != nil {
+		if err, ok := errors.AsType[*exec.ExitError](err); ok {
+			return nil, fmt.Errorf("failed to clone repository: %w: %v", err, string(cloneOutput))
+		}
+		return nil, fmt.Errorf("failed to clone repository: %w", err)
+	}
+	fmt.Println(string(cloneOutput))
+
+	pkgCmd := exec.CommandContext(ctx, "makepkg", "-si", "--noconfirm")
+	cloneCmd.Env = userEnv
+	pkgCmd.Dir = pkgDir
+	pkgCmd.SysProcAttr = &syscall.SysProcAttr{
+		Credential: userCredential,
+	}
+	pkgOutput, err := pkgCmd.CombinedOutput()
+	if err != nil {
+		if err, ok := errors.AsType[*exec.ExitError](err); ok {
+			return nil, fmt.Errorf("failed to build package: %w: %v", err, string(pkgOutput))
+		}
+		return nil, fmt.Errorf("failed to build package: %w", err)
+	}
+
+	return ipcv1.InstallAurResponse_builder{}.Build(), nil
+}
+
+func getCredential(username string) (*syscall.Credential, error) {
+	usr, err := user.Lookup(username)
+	if err != nil {
+		return nil, fmt.Errorf("failed to look up user %q: %w", username, err)
+	}
+	uid, err := strconv.ParseUint(usr.Uid, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+	gid, err := strconv.ParseUint(usr.Gid, 10, 32)
+	if err != nil {
+		return nil, err
+	}
+	sgidStrings, err := usr.GroupIds()
+	if err != nil {
+		return nil, err
+	}
+	var sgids []uint32
+	for _, sgidString := range sgidStrings {
+		sgid, err := strconv.ParseUint(sgidString, 10, 32)
+		if err != nil {
+			return nil, err
+		}
+		if sgid != gid {
+			sgids = append(sgids, uint32(sgid))
+		}
+	}
+	return &syscall.Credential{
+		Uid:    uint32(uid),
+		Gid:    uint32(gid),
+		Groups: sgids,
+	}, nil
+}
+
+func buildUserEnv(username string) []string {
+	home := filepath.Join("/home", username)
+	return []string{
+		"HOME=" + home,
+		"USER=" + username,
+		"LOGNAME=" + username,
+		"PATH=/usr/local/bin:/usr/bin",
+		"SHELL=/bin/bash",
+		"XDG_CONFIG_HOME=" + filepath.Join(home, ".config"),
+		"XDG_CACHE_HOME=" + filepath.Join(home, ".cache"),
+		"XDG_DATA_HOME=" + filepath.Join(home, ".local/share"),
+		"XDG_STATE_HOME=" + filepath.Join(home, ".local/state"),
+	}
 }
